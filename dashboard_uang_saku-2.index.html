@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard Uang Saku Santri — Pondok Pesantren</title>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --hijau: #1a5c3a;
+    --hijau-muda: #2d8653;
+    --hijau-terang: #4caf7d;
+    --emas: #c9a84c;
+    --emas-muda: #e8c76a;
+    --krem: #fdf6e3;
+    --krem-gelap: #f0e6c8;
+    --putih: #ffffff;
+    --abu: #6b7280;
+    --gelap: #1a2e1a;
+    --merah: #dc2626;
+    --merah-muda: #fef2f2;
+    --shadow: 0 4px 24px rgba(26,92,58,0.12);
+    --shadow-lg: 0 8px 40px rgba(26,92,58,0.18);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: var(--krem);
+    min-height: 100vh;
+    color: var(--gelap);
+  }
+
+  /* ========== HALAMAN LOGIN ========== */
+  #halaman-login {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #1a5c3a 0%, #0f3a22 50%, #1a3a0f 100%);
+    position: relative;
+    overflow: hidden;
+  }
+  #halaman-login::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: 
+      radial-gradient(circle at 20% 30%, rgba(201,168,76,0.15) 0%, transparent 50%),
+      radial-gradient(circle at 80% 70%, rgba(201,168,76,0.1) 0%, transparent 50%);
+  }
+  #halaman-login::after {
+    content: '﷽';
+    position: absolute;
+    font-size: 300px;
+    color: rgba(255,255,255,0.03);
+    font-family: 'Amiri', serif;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    pointer-events: none;
+    white-space: nowrap;
+  }
+  .login-box {
+    background: rgba(255,255,255,0.97);
+    border-radius: 24px;
+    padding: 48px 44px;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.4);
+    position: relative;
+    z-index: 1;
+    border-top: 4px solid var(--emas);
+  }
+  .login-logo {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+  .login-logo .mosque-icon {
+    font-size: 52px;
+    display: block;
+    margin-bottom: 8px;
+  }
+  .login-logo h1 {
+    font-family: 'Amiri', serif;
+    font-size: 22px;
+    color: var(--hijau);
+    line-height: 1.3;
+  }
+  .login-logo p {
+    font-size: 12px;
+    color: var(--abu);
+    margin-top: 4px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  .login-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 28px;
+    background: var(--krem);
+    padding: 4px;
+    border-radius: 12px;
+  }
+  .login-tab {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: transparent;
+    color: var(--abu);
+  }
+  .login-tab.active {
+    background: var(--hijau);
+    color: white;
+    box-shadow: 0 2px 8px rgba(26,92,58,0.3);
+  }
+  .form-group { margin-bottom: 18px; }
+  .form-group label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--hijau);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .form-group input {
+    width: 100%;
+    padding: 13px 16px;
+    border: 2px solid #e5e7eb;
+    border-radius: 10px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 15px;
+    outline: none;
+    transition: border-color 0.2s;
+    background: var(--putih);
+  }
+  .form-group input:focus { border-color: var(--hijau-terang); }
+  .btn-login {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, var(--hijau), var(--hijau-muda));
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 8px;
+    letter-spacing: 0.3px;
+  }
+  .btn-login:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(26,92,58,0.35); }
+  .error-msg {
+    background: var(--merah-muda);
+    color: var(--merah);
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    margin-top: 12px;
+    display: none;
+    border-left: 3px solid var(--merah);
+  }
+  .login-hint {
+    text-align: center;
+    margin-top: 16px;
+    font-size: 12px;
+    color: var(--abu);
+  }
+
+  /* ========== HALAMAN ADMIN ========== */
+  #halaman-admin, #halaman-wali { display: none; }
+  .navbar {
+    background: linear-gradient(135deg, var(--hijau) 0%, #0f3a22 100%);
+    padding: 0 32px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 2px 16px rgba(26,92,58,0.3);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: white;
+  }
+  .navbar-brand span { font-size: 28px; }
+  .navbar-brand h2 { font-family: 'Amiri', serif; font-size: 20px; line-height: 1.2; }
+  .navbar-brand p { font-size: 11px; opacity: 0.7; }
+  .navbar-right { display: flex; align-items: center; gap: 16px; }
+  .user-badge {
+    background: rgba(255,255,255,0.15);
+    padding: 6px 14px;
+    border-radius: 20px;
+    color: white;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .badge-role {
+    background: var(--emas);
+    color: var(--gelap);
+    padding: 3px 10px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 700;
+    margin-left: 4px;
+  }
+  .btn-logout {
+    background: rgba(255,255,255,0.2);
+    border: 1px solid rgba(255,255,255,0.3);
+    color: white;
+    padding: 7px 16px;
+    border-radius: 8px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-logout:hover { background: rgba(255,255,255,0.3); }
+
+  .main-content { padding: 32px; max-width: 1400px; margin: 0 auto; }
+
+  /* STATS CARDS */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    margin-bottom: 32px;
+  }
+  .stat-card {
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: var(--shadow);
+    border-left: 4px solid var(--hijau-terang);
+    transition: transform 0.2s;
+  }
+  .stat-card:hover { transform: translateY(-2px); }
+  .stat-card.gold { border-left-color: var(--emas); }
+  .stat-card.blue { border-left-color: #3b82f6; }
+  .stat-card.purple { border-left-color: #8b5cf6; }
+  .stat-label { font-size: 12px; color: var(--abu); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+  .stat-value { font-size: 28px; font-weight: 700; color: var(--gelap); margin-top: 6px; }
+  .stat-value.small { font-size: 20px; }
+  .stat-icon { font-size: 32px; float: right; margin-top: -8px; }
+
+  /* REKAP TABLE */
+  .card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    margin-bottom: 24px;
+  }
+  .card-header {
+    padding: 20px 24px;
+    background: linear-gradient(135deg, var(--hijau) 0%, var(--hijau-muda) 100%);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .card-header h3 { font-size: 16px; font-weight: 700; }
+  .card-header p { font-size: 12px; opacity: 0.8; }
+  .search-box {
+    background: rgba(255,255,255,0.2);
+    border: 1px solid rgba(255,255,255,0.4);
+    border-radius: 8px;
+    padding: 8px 14px;
+    color: white;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 13px;
+    outline: none;
+    width: 220px;
+  }
+  .search-box::placeholder { color: rgba(255,255,255,0.6); }
+  .filter-row {
+    padding: 16px 24px;
+    border-bottom: 1px solid #f0f0f0;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .filter-select {
+    padding: 8px 12px;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 13px;
+    outline: none;
+    background: white;
+    cursor: pointer;
+  }
+  .filter-select:focus { border-color: var(--hijau-terang); }
+  table { width: 100%; border-collapse: collapse; }
+  thead tr { background: #f8fdf9; }
+  th {
+    padding: 12px 16px;
+    text-align: left;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--abu);
+    border-bottom: 2px solid #e5e7eb;
+  }
+  td {
+    padding: 13px 16px;
+    border-bottom: 1px solid #f3f4f6;
+    font-size: 14px;
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #f8fdf9; }
+  .kamar-badge {
+    background: var(--krem);
+    color: var(--hijau);
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    border: 1px solid var(--krem-gelap);
+    white-space: nowrap;
+  }
+  .saldo-pos { color: #059669; font-weight: 700; }
+  .saldo-neg { color: var(--merah); font-weight: 700; }
+  .saldo-zero { color: var(--abu); }
+  .id-badge {
+    font-family: monospace;
+    font-size: 12px;
+    background: #f3f4f6;
+    padding: 3px 8px;
+    border-radius: 4px;
+    color: #374151;
+  }
+  .rekap-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .bar-fill {
+    height: 8px;
+    border-radius: 4px;
+    background: linear-gradient(90deg, var(--hijau-terang), var(--emas));
+    min-width: 4px;
+    transition: width 0.5s ease;
+  }
+  .pagination {
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid #f0f0f0;
+    font-size: 13px;
+    color: var(--abu);
+  }
+  .page-btns { display: flex; gap: 6px; }
+  .page-btn {
+    padding: 6px 12px;
+    border: 1px solid #e5e7eb;
+    background: white;
+    border-radius: 6px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .page-btn:hover, .page-btn.active { background: var(--hijau); color: white; border-color: var(--hijau); }
+
+  /* ========== HALAMAN WALI SANTRI ========== */
+  .wali-container {
+    min-height: calc(100vh - 64px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 16px;
+    background: linear-gradient(160deg, #f0faf4 0%, var(--krem) 100%);
+  }
+  .wali-card {
+    background: white;
+    border-radius: 24px;
+    width: 100%;
+    max-width: 480px;
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+  }
+  .wali-header {
+    background: linear-gradient(135deg, var(--hijau), var(--hijau-muda));
+    padding: 32px;
+    text-align: center;
+    color: white;
+    position: relative;
+  }
+  .wali-header::after {
+    content: '🕌';
+    position: absolute;
+    font-size: 80px;
+    right: -10px;
+    bottom: -20px;
+    opacity: 0.15;
+    transform: rotate(-10deg);
+  }
+  .wali-header .avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    margin: 0 auto 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 36px;
+    border: 3px solid var(--emas);
+  }
+  .wali-header h2 { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+  .wali-header p { opacity: 0.85; font-size: 14px; }
+  .wali-body { padding: 32px; }
+  .saldo-display {
+    background: linear-gradient(135deg, var(--krem), var(--krem-gelap));
+    border-radius: 16px;
+    padding: 28px;
+    text-align: center;
+    margin-bottom: 24px;
+    border: 2px solid var(--emas-muda);
+    position: relative;
+    overflow: hidden;
+  }
+  .saldo-display::before {
+    content: 'Rp';
+    position: absolute;
+    font-family: 'Amiri', serif;
+    font-size: 120px;
+    color: rgba(201,168,76,0.08);
+    top: -20px;
+    right: -10px;
+    font-weight: 700;
+  }
+  .saldo-label { font-size: 12px; color: var(--abu); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
+  .saldo-amount {
+    font-size: 40px;
+    font-weight: 700;
+    color: var(--hijau);
+    margin: 8px 0;
+    letter-spacing: -1px;
+  }
+  .saldo-amount.negative { color: var(--merah); }
+  .saldo-updated { font-size: 12px; color: var(--abu); }
+  .info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .info-item {
+    background: #f8fdf9;
+    border-radius: 10px;
+    padding: 14px;
+    border: 1px solid #e8f5ec;
+  }
+  .info-item .label { font-size: 11px; color: var(--abu); font-weight: 600; text-transform: uppercase; }
+  .info-item .value { font-size: 14px; font-weight: 700; color: var(--gelap); margin-top: 4px; }
+  .wali-footer {
+    text-align: center;
+    padding: 0 32px 32px;
+    color: var(--abu);
+    font-size: 12px;
+    line-height: 1.7;
+  }
+  .dots { display: flex; justify-content: center; gap: 6px; margin: 12px 0; }
+  .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--hijau-terang); }
+  .dot:nth-child(2) { background: var(--emas); }
+  .dot:nth-child(3) { background: var(--hijau-terang); }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .main-content { padding: 16px; }
+    .navbar { padding: 0 16px; }
+    .stats-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+    .stat-value { font-size: 20px; }
+    .filter-row { flex-direction: column; align-items: stretch; }
+    .search-box { width: 100%; }
+    th, td { padding: 10px 12px; font-size: 13px; }
+  }
+  @media (max-width: 480px) {
+    .stats-grid { grid-template-columns: 1fr; }
+    .info-grid { grid-template-columns: 1fr; }
+    .navbar-brand h2 { font-size: 16px; }
+  }
+
+  /* Animated counter */
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .stat-card, .card, .wali-card { animation: fadeInUp 0.4s ease both; }
+  .stat-card:nth-child(2) { animation-delay: 0.05s; }
+  .stat-card:nth-child(3) { animation-delay: 0.1s; }
+  .stat-card:nth-child(4) { animation-delay: 0.15s; }
+
+  .empty-state {
+    text-align: center;
+    padding: 48px 24px;
+    color: var(--abu);
+  }
+  .empty-state .icon { font-size: 48px; margin-bottom: 12px; }
+  .empty-state p { font-size: 14px; }
+</style>
+</head>
+<body>
+
+<!-- ========== HALAMAN LOGIN ========== -->
+<div id="halaman-login">
+  <div class="login-box">
+    <div class="login-logo">
+      <span class="mosque-icon">🕌</span>
+      <h1>Dashboard Uang Saku Santri</h1>
+      <p>Pondok Pesantren — Data Santri Putra 2026</p>
+    </div>
+    <div class="login-tabs">
+      <button class="login-tab active" onclick="switchTab('wali')">👨‍👦 Wali Santri</button>
+      <button class="login-tab" onclick="switchTab('admin')">🔐 Admin</button>
+    </div>
+    
+    <!-- Form Wali Santri -->
+    <div id="form-wali">
+      <div class="form-group">
+        <label>ID Santri</label>
+        <input type="text" id="input-id" placeholder="Contoh: ST0001" autocomplete="off">
+      </div>
+      <div class="form-group">
+        <label>PIN</label>
+        <input type="password" id="input-pin" placeholder="Masukkan PIN 4 digit" maxlength="6" onkeydown="if(event.key==='Enter')loginWali()">
+      </div>
+      <button class="btn-login" onclick="loginWali()">🔓 Masuk sebagai Wali Santri</button>
+      <div class="error-msg" id="error-wali">ID atau PIN salah. Silakan coba lagi.</div>
+      <div class="login-hint">ID & PIN tersedia di lembar yang diberikan pengurus pondok</div>
+    </div>
+    
+    <!-- Form Admin -->
+    <div id="form-admin" style="display:none">
+      <div class="form-group">
+        <label>Username Admin</label>
+        <input type="text" id="input-admin-user" placeholder="Username" autocomplete="off">
+      </div>
+      <div class="form-group">
+        <label>Password Admin</label>
+        <input type="password" id="input-admin-pass" placeholder="Password" onkeydown="if(event.key==='Enter')loginAdmin()">
+      </div>
+      <button class="btn-login" onclick="loginAdmin()">🔐 Masuk sebagai Admin</button>
+      <div class="error-msg" id="error-admin">Username atau password salah.</div>
+      <div class="login-hint">Khusus pengurus pondok yang berwenang</div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== HALAMAN ADMIN ========== -->
+<div id="halaman-admin">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <span>🕌</span>
+      <div>
+        <h2>Dashboard Uang Saku</h2>
+        <p>Pondok Pesantren — Santri Putra 2026</p>
+      </div>
+    </div>
+    <div class="navbar-right">
+      <span class="user-badge">Admin <span class="badge-role">ADMIN</span></span>
+      <button class="btn-logout" onclick="logout()">Keluar</button>
+    </div>
+  </nav>
+  <div class="main-content">
+    <div class="stats-grid">
+      <div class="stat-card gold">
+        <span class="stat-icon">💰</span>
+        <div class="stat-label">Total Saldo Semua Santri</div>
+        <div class="stat-value small" id="stat-grand-total">Rp 22.603.065</div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-icon">🧑‍🎓</span>
+        <div class="stat-label">Total Santri</div>
+        <div class="stat-value" id="stat-total-santri">192</div>
+      </div>
+      <div class="stat-card blue">
+        <span class="stat-icon">🏠</span>
+        <div class="stat-label">Jumlah Kamar</div>
+        <div class="stat-value">8</div>
+      </div>
+      <div class="stat-card purple">
+        <span class="stat-icon">📊</span>
+        <div class="stat-label">Santri Bersaldo</div>
+        <div class="stat-value" id="stat-bersaldo">—</div>
+      </div>
+    </div>
+
+    <!-- Rekap Per Kamar -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <h3>📊 Rekapitulasi Saldo Per Kamar</h3>
+          <p>Total saldo semua santri dikelompokkan per kamar</p>
+        </div>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Kamar</th>
+            <th>Jumlah Santri</th>
+            <th>Total Saldo</th>
+            <th>Proporsi</th>
+          </tr>
+        </thead>
+        <tbody id="tabel-rekap"></tbody>
+      </table>
+    </div>
+
+    <!-- Tabel Semua Santri -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <h3>🧑‍🎓 Data Saldo Semua Santri</h3>
+          <p>Klik kolom untuk mengurutkan</p>
+        </div>
+        <input type="text" class="search-box" id="search-santri" placeholder="🔍 Cari nama santri..." oninput="filterTable()">
+      </div>
+      <div class="filter-row">
+        <label style="font-size:13px;font-weight:600;color:var(--abu)">Filter Kamar:</label>
+        <select class="filter-select" id="filter-kamar" onchange="filterTable()">
+          <option value="">Semua Kamar</option>
+          <option>A1. Syafi'ie</option>
+          <option>A2. Hambali</option>
+          <option>A3. Bukhori</option>
+          <option>B1. Maliki</option>
+          <option>B2. Hanafi</option>
+          <option>C3. Nawawi</option>
+          <option>C2. Ghozali</option>
+          <option>C1. Abu Bakar</option>
+        </select>
+        <select class="filter-select" id="filter-saldo" onchange="filterTable()">
+          <option value="">Semua Saldo</option>
+          <option value="pos">Saldo > 0</option>
+          <option value="zero">Saldo = 0</option>
+          <option value="neg">Saldo Minus</option>
+        </select>
+        <span id="info-count" style="font-size:13px;color:var(--abu);margin-left:auto"></span>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>ID</th>
+            <th onclick="sortTable('nama')" style="cursor:pointer">Nama Santri ⇅</th>
+            <th onclick="sortTable('kamar')" style="cursor:pointer">Kamar ⇅</th>
+            <th onclick="sortTable('saldo')" style="cursor:pointer">Saldo ⇅</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="tabel-santri"></tbody>
+      </table>
+      <div class="pagination" id="pagination-bar">
+        <span id="page-info"></span>
+        <div class="page-btns" id="page-btns"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== HALAMAN WALI SANTRI ========== -->
+<div id="halaman-wali">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <span>🕌</span>
+      <div>
+        <h2>Info Uang Saku</h2>
+        <p>Pondok Pesantren — Wali Santri</p>
+      </div>
+    </div>
+    <div class="navbar-right">
+      <span class="user-badge" id="wali-nama-nav">—</span>
+      <button class="btn-logout" onclick="logout()">Keluar</button>
+    </div>
+  </nav>
+  <div class="wali-container">
+    <div class="wali-card">
+      <div class="wali-header">
+        <div class="avatar">🧑‍🎓</div>
+        <h2 id="wali-nama">Nama Santri</h2>
+        <p id="wali-kamar">Kamar —</p>
+      </div>
+      <div class="wali-body">
+        <div class="saldo-display">
+          <div class="saldo-label">Saldo Uang Saku Saat Ini</div>
+          <div class="saldo-amount" id="wali-saldo">Rp 0</div>
+          <div class="saldo-updated">Data per: <span id="wali-tanggal">—</span></div>
+        </div>
+        <div class="info-grid">
+          <div class="info-item">
+            <div class="label">ID Santri</div>
+            <div class="value" id="wali-id">—</div>
+          </div>
+          <div class="info-item">
+            <div class="label">Kamar</div>
+            <div class="value" id="wali-kamar2">—</div>
+          </div>
+        </div>
+      </div>
+      <div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+      <div class="wali-footer">
+        <p>Untuk pertanyaan mengenai saldo, silakan hubungi pengurus pondok.</p>
+        <p style="margin-top:6px">Jaga amanah, jaga akhlaq. 🤲</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ===== DATA SANTRI =====
+const SANTRI_DATA = {"ST0001":{"pin":"1073","nama":"Muzakky S.","kamar":"A1. Syafi'ie","saldo":0},"ST0002":{"pin":"1146","nama":"Hanif. Y","kamar":"A1. Syafi'ie","saldo":2000000},"ST0003":{"pin":"1219","nama":"Thoriq","kamar":"A1. Syafi'ie","saldo":0},"ST0004":{"pin":"1292","nama":"Rohman. N","kamar":"A1. Syafi'ie","saldo":0},"ST0005":{"pin":"1365","nama":"Mundir Jamil","kamar":"A1. Syafi'ie","saldo":145000},"ST0006":{"pin":"1438","nama":"M. Faza","kamar":"A1. Syafi'ie","saldo":0},"ST0007":{"pin":"1511","nama":"Sholeh","kamar":"A1. Syafi'ie","saldo":140000},"ST0008":{"pin":"1584","nama":"Dani","kamar":"A1. Syafi'ie","saldo":0},"ST0009":{"pin":"1657","nama":"Keisha","kamar":"A1. Syafi'ie","saldo":750000},"ST0010":{"pin":"1730","nama":"Aufal Marom","kamar":"A1. Syafi'ie","saldo":0},"ST0011":{"pin":"1803","nama":"Zaki Wildan","kamar":"A1. Syafi'ie","saldo":850000},"ST0012":{"pin":"1876","nama":"Riyan","kamar":"A1. Syafi'ie","saldo":0},"ST0013":{"pin":"1949","nama":"Joel","kamar":"A1. Syafi'ie","saldo":50000},"ST0014":{"pin":"2022","nama":"Abay Amroe","kamar":"A1. Syafi'ie","saldo":0},"ST0015":{"pin":"2095","nama":"Jauharul","kamar":"A1. Syafi'ie","saldo":-15000},"ST0016":{"pin":"2168","nama":"Okka","kamar":"A1. Syafi'ie","saldo":120000},"ST0017":{"pin":"2241","nama":"Ghais","kamar":"A1. Syafi'ie","saldo":100000},"ST0018":{"pin":"2314","nama":"A. Yani","kamar":"A1. Syafi'ie","saldo":1000000},"ST0019":{"pin":"2387","nama":"Alex. F","kamar":"A2. Hambali","saldo":0},"ST0020":{"pin":"2460","nama":"Zaidan. S","kamar":"A2. Hambali","saldo":0},"ST0021":{"pin":"2533","nama":"Kharis","kamar":"A2. Hambali","saldo":0},"ST0022":{"pin":"2606","nama":"Malik. M","kamar":"A2. Hambali","saldo":0},"ST0023":{"pin":"2679","nama":"Revan","kamar":"A2. Hambali","saldo":0},"ST0024":{"pin":"2752","nama":"Anja","kamar":"A2. Hambali","saldo":30000},"ST0025":{"pin":"2825","nama":"Alfan","kamar":"A2. Hambali","saldo":0},"ST0026":{"pin":"2898","nama":"Wildan N","kamar":"A2. Hambali","saldo":0},"ST0027":{"pin":"2971","nama":"Al Farhani","kamar":"A2. Hambali","saldo":20000},"ST0028":{"pin":"3044","nama":"Vicko","kamar":"A2. Hambali","saldo":0},"ST0029":{"pin":"3117","nama":"Yudisthira","kamar":"A2. Hambali","saldo":0},"ST0030":{"pin":"3190","nama":"Firza","kamar":"A2. Hambali","saldo":30000},"ST0031":{"pin":"3263","nama":"Anja","kamar":"A2. Hambali","saldo":30000},"ST0032":{"pin":"3336","nama":"Rifal","kamar":"A2. Hambali","saldo":0},"ST0033":{"pin":"3409","nama":"Fater","kamar":"A2. Hambali","saldo":0},"ST0034":{"pin":"3482","nama":"Kayyis","kamar":"A2. Hambali","saldo":0},"ST0035":{"pin":"3555","nama":"Iqbal","kamar":"A2. Hambali","saldo":0},"ST0036":{"pin":"3628","nama":"Anwarul","kamar":"A2. Hambali","saldo":310000},"ST0037":{"pin":"3701","nama":"Fathan","kamar":"A3. Bukhori","saldo":450000},"ST0038":{"pin":"3774","nama":"Syahwal","kamar":"A3. Bukhori","saldo":0},"ST0039":{"pin":"3847","nama":"Fahmi Afandi","kamar":"A3. Bukhori","saldo":185000},"ST0040":{"pin":"3920","nama":"Ismail. M","kamar":"A3. Bukhori","saldo":0},"ST0041":{"pin":"3993","nama":"Akbar","kamar":"A3. Bukhori","saldo":130000},"ST0042":{"pin":"4066","nama":"Habibi. A","kamar":"A3. Bukhori","saldo":0},"ST0043":{"pin":"4139","nama":"Viki. A","kamar":"A3. Bukhori","saldo":0},"ST0044":{"pin":"4212","nama":"Elvandy","kamar":"A3. Bukhori","saldo":590000},"ST0045":{"pin":"4285","nama":"Abdhur","kamar":"A3. Bukhori","saldo":50000},"ST0046":{"pin":"4358","nama":"Rakha","kamar":"A3. Bukhori","saldo":-40000},"ST0047":{"pin":"4431","nama":"Rega","kamar":"A3. Bukhori","saldo":300000},"ST0048":{"pin":"4504","nama":"Raihan Nur","kamar":"A3. Bukhori","saldo":0},"ST0049":{"pin":"4577","nama":"Hamid","kamar":"A3. Bukhori","saldo":0},"ST0050":{"pin":"4650","nama":"Zaidan. B","kamar":"A3. Bukhori","saldo":0},"ST0051":{"pin":"4723","nama":"Fardhan","kamar":"A3. Bukhori","saldo":0},"ST0052":{"pin":"4796","nama":"Naufal","kamar":"A3. Bukhori","saldo":0},"ST0053":{"pin":"4869","nama":"S. Fadhil","kamar":"A3. Bukhori","saldo":100000},"ST0054":{"pin":"4942","nama":"Jahirrudin","kamar":"A3. Bukhori","saldo":0},"ST0055":{"pin":"5015","nama":"Roziqin","kamar":"B1. Maliki","saldo":0},"ST0056":{"pin":"5088","nama":"Abu Rizal","kamar":"B1. Maliki","saldo":0},"ST0057":{"pin":"5161","nama":"Shofi","kamar":"B1. Maliki","saldo":10000},"ST0058":{"pin":"5234","nama":"Mudzakkir","kamar":"B1. Maliki","saldo":100000},"ST0059":{"pin":"5307","nama":"Hasby. A","kamar":"B1. Maliki","saldo":240000},"ST0060":{"pin":"5380","nama":"Fahri Az","kamar":"B1. Maliki","saldo":0},"ST0061":{"pin":"5453","nama":"Azmi","kamar":"B1. Maliki","saldo":0},"ST0062":{"pin":"5526","nama":"Nur Raihan","kamar":"B1. Maliki","saldo":-150000},"ST0063":{"pin":"5599","nama":"Zada","kamar":"B1. Maliki","saldo":70000},"ST0064":{"pin":"5672","nama":"A. Sufyan","kamar":"B1. Maliki","saldo":1300000},"ST0065":{"pin":"5745","nama":"Akmal Kafi","kamar":"B1. Maliki","saldo":0},"ST0066":{"pin":"5818","nama":"Rama Putra","kamar":"B1. Maliki","saldo":150000},"ST0067":{"pin":"5891","nama":"Yahya","kamar":"B1. Maliki","saldo":80000},"ST0068":{"pin":"5964","nama":"Khoirul","kamar":"B1. Maliki","saldo":0},"ST0069":{"pin":"6037","nama":"Zamroni","kamar":"B1. Maliki","saldo":0},"ST0070":{"pin":"6110","nama":"Raafa","kamar":"B1. Maliki","saldo":20000},"ST0071":{"pin":"6183","nama":"Ilham Muzaqi","kamar":"B1. Maliki","saldo":240000},"ST0072":{"pin":"6256","nama":"Nizam Ardiansyah","kamar":"B1. Maliki","saldo":300000},"ST0073":{"pin":"6329","nama":"Nizamudin","kamar":"B1. Maliki","saldo":60000},"ST0074":{"pin":"6402","nama":"Saiful","kamar":"B1. Maliki","saldo":255000},"ST0075":{"pin":"6475","nama":"Anwar Nur","kamar":"B1. Maliki","saldo":590000},"ST0076":{"pin":"6548","nama":"Alma","kamar":"B1. Maliki","saldo":-30000},"ST0077":{"pin":"6621","nama":"Fandi","kamar":"B1. Maliki","saldo":70000},"ST0078":{"pin":"6694","nama":"Alba","kamar":"B1. Maliki","saldo":180000},"ST0079":{"pin":"6767","nama":"Firman","kamar":"B1. Maliki","saldo":135000},"ST0080":{"pin":"6840","nama":"Rizqi","kamar":"B1. Maliki","saldo":150000},"ST0081":{"pin":"6913","nama":"Adam","kamar":"B1. Maliki","saldo":65000},"ST0082":{"pin":"6986","nama":"Dimas K","kamar":"B1. Maliki","saldo":0},"ST0083":{"pin":"7059","nama":"Gusmanan","kamar":"B1. Maliki","saldo":110000},"ST0084":{"pin":"7132","nama":"Azis Pidek","kamar":"B1. Maliki","saldo":190000},"ST0085":{"pin":"7205","nama":"Hafidzi","kamar":"B1. Maliki","saldo":170000},"ST0086":{"pin":"7278","nama":"Anas","kamar":"B1. Maliki","saldo":0},"ST0087":{"pin":"7351","nama":"Hendra","kamar":"B1. Maliki","saldo":225000},"ST0088":{"pin":"7424","nama":"Hasan","kamar":"B1. Maliki","saldo":30000},"ST0089":{"pin":"7497","nama":"Junior","kamar":"B1. Maliki","saldo":135000},"ST0090":{"pin":"7570","nama":"Alfino","kamar":"B1. Maliki","saldo":160000},"ST0091":{"pin":"7643","nama":"Syamsudin","kamar":"B1. Maliki","saldo":0},"ST0092":{"pin":"7716","nama":"Yoga","kamar":"B2. Hanafi","saldo":0},"ST0093":{"pin":"7789","nama":"Masrofi","kamar":"B2. Hanafi","saldo":0},"ST0094":{"pin":"7862","nama":"Ilham Muqorrobin","kamar":"B2. Hanafi","saldo":0},"ST0095":{"pin":"7935","nama":"Sulthon","kamar":"B2. Hanafi","saldo":0},"ST0096":{"pin":"8008","nama":"Izam","kamar":"B2. Hanafi","saldo":90000},"ST0097":{"pin":"8081","nama":"Abdul Aziz","kamar":"B2. Hanafi","saldo":60000},"ST0098":{"pin":"8154","nama":"Wahyu","kamar":"B2. Hanafi","saldo":70000},"ST0099":{"pin":"8227","nama":"Fachri","kamar":"B2. Hanafi","saldo":0},"ST0100":{"pin":"8300","nama":"Jerry","kamar":"B2. Hanafi","saldo":60000},"ST0101":{"pin":"8373","nama":"Irfan","kamar":"B2. Hanafi","saldo":270000},"ST0102":{"pin":"8446","nama":"Aditya","kamar":"B2. Hanafi","saldo":320000},"ST0103":{"pin":"8519","nama":"Hafidz A","kamar":"B2. Hanafi","saldo":-5000},"ST0104":{"pin":"8592","nama":"Khoirul Fatihin","kamar":"B2. Hanafi","saldo":232000},"ST0105":{"pin":"8665","nama":"Raja","kamar":"B2. Hanafi","saldo":230000},"ST0106":{"pin":"8738","nama":"Faqeh","kamar":"B2. Hanafi","saldo":185000},"ST0107":{"pin":"8811","nama":"M. Nizam","kamar":"B2. Hanafi","saldo":245000},"ST0108":{"pin":"8884","nama":"Zidni","kamar":"B2. Hanafi","saldo":310000},"ST0109":{"pin":"8957","nama":"Dimas. P","kamar":"B2. Hanafi","saldo":150000},"ST0110":{"pin":"9030","nama":"Abid","kamar":"B2. Hanafi","saldo":0},"ST0111":{"pin":"9103","nama":"Amanahtulloh","kamar":"B2. Hanafi","saldo":400000},"ST0112":{"pin":"9176","nama":"Arif","kamar":"B2. Hanafi","saldo":320000},"ST0113":{"pin":"9249","nama":"Kevin","kamar":"B2. Hanafi","saldo":200000},"ST0114":{"pin":"9322","nama":"Keilo","kamar":"B2. Hanafi","saldo":260000},"ST0115":{"pin":"9395","nama":"Keialo","kamar":"B2. Hanafi","saldo":260000},"ST0116":{"pin":"9468","nama":"Arka","kamar":"B2. Hanafi","saldo":1000000},"ST0117":{"pin":"9541","nama":"Rozin","kamar":"B2. Hanafi","saldo":200000},"ST0118":{"pin":"9614","nama":"Azka","kamar":"B2. Hanafi","saldo":0},"ST0119":{"pin":"9687","nama":"Amin","kamar":"B2. Hanafi","saldo":140000},"ST0120":{"pin":"9760","nama":"Fadhil rafi'i","kamar":"B2. Hanafi","saldo":215000},"ST0121":{"pin":"9833","nama":"Zahirul","kamar":"B2. Hanafi","saldo":5000},"ST0122":{"pin":"9906","nama":"Rafif","kamar":"B2. Hanafi","saldo":290000},"ST0123":{"pin":"9979","nama":"M. Saifal Asyrof","kamar":"B2. Hanafi","saldo":0},"ST0124":{"pin":"1052","nama":"Romly","kamar":"C3. Nawawi","saldo":150000},"ST0125":{"pin":"1125","nama":"Rafli","kamar":"C3. Nawawi","saldo":200000},"ST0126":{"pin":"1198","nama":"Rafi Alif","kamar":"C3. Nawawi","saldo":10000},"ST0127":{"pin":"1271","nama":"Roychan","kamar":"C3. Nawawi","saldo":200000},"ST0128":{"pin":"1344","nama":"Maulana","kamar":"C3. Nawawi","saldo":0},"ST0129":{"pin":"1417","nama":"Hirzul","kamar":"C3. Nawawi","saldo":250000},"ST0130":{"pin":"1490","nama":"Galih","kamar":"C3. Nawawi","saldo":0},"ST0131":{"pin":"1563","nama":"Zakaria","kamar":"C3. Nawawi","saldo":0},"ST0132":{"pin":"1636","nama":"Rendy","kamar":"C3. Nawawi","saldo":370000},"ST0133":{"pin":"1709","nama":"Arshavin","kamar":"C3. Nawawi","saldo":0},"ST0134":{"pin":"1782","nama":"Jabbar","kamar":"C3. Nawawi","saldo":0},"ST0135":{"pin":"1855","nama":"Muiz","kamar":"C3. Nawawi","saldo":10000},"ST0136":{"pin":"1928","nama":"Raihan A","kamar":"C3. Nawawi","saldo":30000},"ST0137":{"pin":"2001","nama":"Habibi N","kamar":"C3. Nawawi","saldo":65000},"ST0138":{"pin":"2074","nama":"Imdad","kamar":"C3. Nawawi","saldo":450000},"ST0139":{"pin":"2147","nama":"Albab","kamar":"C3. Nawawi","saldo":1065},"ST0140":{"pin":"2220","nama":"Wanawa","kamar":"C3. Nawawi","saldo":200000},"ST0141":{"pin":"2293","nama":"Althof","kamar":"C3. Nawawi","saldo":100000},"ST0142":{"pin":"2366","nama":"Adha","kamar":"C3. Nawawi","saldo":45000},"ST0143":{"pin":"2439","nama":"Akma","kamar":"C3. Nawawi","saldo":700000},"ST0144":{"pin":"2512","nama":"Bagas","kamar":"C3. Nawawi","saldo":145000},"ST0145":{"pin":"2585","nama":"Afrizal","kamar":"C3. Nawawi","saldo":460000},"ST0146":{"pin":"2658","nama":"Habibi Y","kamar":"C3. Nawawi","saldo":1430000},"ST0147":{"pin":"2731","nama":"Nuril","kamar":"C3. Nawawi","saldo":10000},"ST0148":{"pin":"2804","nama":"Syahrul","kamar":"C2. Ghozali","saldo":0},"ST0149":{"pin":"2877","nama":"Faiz","kamar":"C2. Ghozali","saldo":0},"ST0150":{"pin":"2950","nama":"Ringgo","kamar":"C2. Ghozali","saldo":30000},"ST0151":{"pin":"3023","nama":"Khoirul Azzam","kamar":"C2. Ghozali","saldo":0},"ST0152":{"pin":"3096","nama":"Zidane Nazriel","kamar":"C2. Ghozali","saldo":0},"ST0153":{"pin":"3169","nama":"Noval Abdillah","kamar":"C2. Ghozali","saldo":0},"ST0154":{"pin":"3242","nama":"Abit Fadil F","kamar":"C2. Ghozali","saldo":0},"ST0155":{"pin":"3315","nama":"Ahmad Hattan","kamar":"C2. Ghozali","saldo":0},"ST0156":{"pin":"3388","nama":"Afdan Farhan","kamar":"C2. Ghozali","saldo":0},"ST0157":{"pin":"3461","nama":"Fadhil Asna","kamar":"C2. Ghozali","saldo":0},"ST0158":{"pin":"3534","nama":"Alzam Abid Z","kamar":"C2. Ghozali","saldo":0},"ST0159":{"pin":"3607","nama":"Affan Nur A","kamar":"C2. Ghozali","saldo":0},"ST0160":{"pin":"3680","nama":"Affin Nur A","kamar":"C2. Ghozali","saldo":0},"ST0161":{"pin":"3753","nama":"Umar Faruq","kamar":"C2. Ghozali","saldo":0},"ST0162":{"pin":"3826","nama":"Alfino Binuriel","kamar":"C2. Ghozali","saldo":0},"ST0163":{"pin":"3899","nama":"M Abdulloh Almakky","kamar":"C2. Ghozali","saldo":0},"ST0164":{"pin":"3972","nama":"Wildan Tri M F","kamar":"C2. Ghozali","saldo":0},"ST0165":{"pin":"4045","nama":"M Ali Alnizar","kamar":"C2. Ghozali","saldo":0},"ST0166":{"pin":"4118","nama":"Ahmad Dhani S","kamar":"C2. Ghozali","saldo":0},"ST0167":{"pin":"4191","nama":"Sultan Syarief H","kamar":"C2. Ghozali","saldo":0},"ST0168":{"pin":"4264","nama":"Sulton Malik H","kamar":"C2. Ghozali","saldo":0},"ST0169":{"pin":"4337","nama":"Mufidz Ali Zaini","kamar":"C2. Ghozali","saldo":0},"ST0170":{"pin":"4410","nama":"Rafael Yonathan","kamar":"C2. Ghozali","saldo":0},"ST0171":{"pin":"4483","nama":"M Reza Aditya","kamar":"C2. Ghozali","saldo":0},"ST0172":{"pin":"4556","nama":"Ilham Alfauzan","kamar":"C2. Ghozali","saldo":0},"ST0173":{"pin":"4629","nama":"Andika Rizki","kamar":"C2. Ghozali","saldo":0},"ST0174":{"pin":"4702","nama":"M. Ibrahim","kamar":"C2. Ghozali","saldo":0},"ST0175":{"pin":"4775","nama":"Daffa Ibnu Hafid","kamar":"C2. Ghozali","saldo":0},"ST0176":{"pin":"4848","nama":"Rasya Ramdhan","kamar":"C2. Ghozali","saldo":0},"ST0177":{"pin":"4921","nama":"M. Fachri Alif","kamar":"C2. Ghozali","saldo":0},"ST0178":{"pin":"4994","nama":"Ahmad Fardani","kamar":"C2. Ghozali","saldo":0},"ST0179":{"pin":"5067","nama":"M. Raihan Amrulloh","kamar":"C2. Ghozali","saldo":0},"ST0180":{"pin":"5140","nama":"Rafa Alvaro H","kamar":"C2. Ghozali","saldo":0},"ST0181":{"pin":"5213","nama":"M. Ilham Arifin","kamar":"C2. Ghozali","saldo":0},"ST0182":{"pin":"5286","nama":"M. mu'izzul h","kamar":"C2. Ghozali","saldo":0},"ST0183":{"pin":"5359","nama":"Alfan Rizqi R","kamar":"C2. Ghozali","saldo":0},"ST0184":{"pin":"5432","nama":"Ust. Hamdan","kamar":"C1. Abu Bakar","saldo":0},"ST0185":{"pin":"5505","nama":"Ust. Nadhim","kamar":"C1. Abu Bakar","saldo":0},"ST0186":{"pin":"5578","nama":"Ust. Habib","kamar":"C1. Abu Bakar","saldo":0},"ST0187":{"pin":"5651","nama":"Ust. Fauzi","kamar":"C1. Abu Bakar","saldo":0},"ST0188":{"pin":"5724","nama":"Ust. Nasrulloh","kamar":"C1. Abu Bakar","saldo":0},"ST0189":{"pin":"5797","nama":"Ust. Taufiq","kamar":"C1. Abu Bakar","saldo":0},"ST0190":{"pin":"5870","nama":"Abid","kamar":"C1. Abu Bakar","saldo":0},"ST0191":{"pin":"5943","nama":"Fahmi Nuris","kamar":"C1. Abu Bakar","saldo":0},"ST0192":{"pin":"6016","nama":"Dimas Andre","kamar":"C1. Abu Bakar","saldo":0}};
+
+const REKAP = [
+  {kamar:"A1. Syafi'ie", jumlah:18, total:5140000},
+  {kamar:"A2. Hambali", jumlah:18, total:420000},
+  {kamar:"A3. Bukhori", jumlah:18, total:1765000},
+  {kamar:"B1. Maliki", jumlah:37, total:4725000},
+  {kamar:"B2. Hanafi", jumlah:32, total:5697000},
+  {kamar:"C3. Nawawi", jumlah:24, total:4826065},
+  {kamar:"C2. Ghozali", jumlah:36, total:30000},
+  {kamar:"C1. Abu Bakar", jumlah:9, total:0},
+];
+
+const ADMIN_CRED = { username: "admin", password: "pesantren2026" };
+const ITEMS_PER_PAGE = 20;
+
+let currentPage = 1;
+let filteredData = [];
+let sortField = 'nama', sortDir = 1;
+let currentTab = 'wali';
+
+// ========== SESSION (persist across tab close) ==========
+function saveSession(data) {
+  try { localStorage.setItem('pp_session', JSON.stringify(data)); } catch(e) {}
+}
+function loadSession() {
+  try { return JSON.parse(localStorage.getItem('pp_session') || 'null'); } catch(e) { return null; }
+}
+function clearSession() {
+  try { localStorage.removeItem('pp_session'); } catch(e) {}
+}
+
+// ========== UI HELPERS ==========
+function rupiah(n) {
+  if (n === 0) return 'Rp 0';
+  const abs = Math.abs(n);
+  const fmt = abs.toLocaleString('id-ID');
+  return (n < 0 ? '- Rp ' : 'Rp ') + fmt;
+}
+function show(id) { document.getElementById(id).style.display = 'block'; }
+function hide(id) { document.getElementById(id).style.display = 'none'; }
+function hideAll() {
+  document.getElementById('halaman-login').style.display = 'none';
+  document.getElementById('halaman-admin').style.display = 'none';
+  document.getElementById('halaman-wali').style.display = 'none';
+}
+
+// ========== TABS ==========
+function switchTab(tab) {
+  currentTab = tab;
+  document.querySelectorAll('.login-tab').forEach((b,i) => b.classList.toggle('active', (i===0&&tab==='wali')||(i===1&&tab==='admin')));
+  document.getElementById('form-wali').style.display = tab === 'wali' ? 'block' : 'none';
+  document.getElementById('form-admin').style.display = tab === 'admin' ? 'block' : 'none';
+}
+
+// ========== LOGIN ==========
+function loginWali() {
+  const id = document.getElementById('input-id').value.trim().toUpperCase();
+  const pin = document.getElementById('input-pin').value.trim();
+  const err = document.getElementById('error-wali');
+  err.style.display = 'none';
+  if (!SANTRI_DATA[id] || SANTRI_DATA[id].pin !== pin) {
+    err.style.display = 'block';
+    return;
+  }
+  const s = SANTRI_DATA[id];
+  saveSession({ role: 'wali', id, nama: s.nama });
+  showWali(id);
+}
+
+function loginAdmin() {
+  const u = document.getElementById('input-admin-user').value.trim();
+  const p = document.getElementById('input-admin-pass').value;
+  const err = document.getElementById('error-admin');
+  err.style.display = 'none';
+  if (u !== ADMIN_CRED.username || p !== ADMIN_CRED.password) {
+    err.style.display = 'block';
+    return;
+  }
+  saveSession({ role: 'admin' });
+  showAdmin();
+}
+
+function logout() {
+  clearSession();
+  hideAll();
+  show('halaman-login');
+  document.getElementById('input-id').value = '';
+  document.getElementById('input-pin').value = '';
+  document.getElementById('input-admin-user').value = '';
+  document.getElementById('input-admin-pass').value = '';
+}
+
+// ========== WALI VIEW ==========
+function showWali(id) {
+  const s = SANTRI_DATA[id];
+  hideAll();
+  show('halaman-wali');
+  document.getElementById('wali-nama').textContent = s.nama;
+  document.getElementById('wali-kamar').textContent = '🏠 ' + s.kamar;
+  document.getElementById('wali-id').textContent = id;
+  document.getElementById('wali-kamar2').textContent = s.kamar;
+  document.getElementById('wali-nama-nav').textContent = s.nama;
+  const el = document.getElementById('wali-saldo');
+  el.textContent = rupiah(s.saldo);
+  el.className = 'saldo-amount' + (s.saldo < 0 ? ' negative' : '');
+  document.getElementById('wali-tanggal').textContent = new Date().toLocaleDateString('id-ID', {day:'numeric',month:'long',year:'numeric'});
+}
+
+// ========== ADMIN VIEW ==========
+function showAdmin() {
+  hideAll();
+  show('halaman-admin');
+  buildRekapTable();
+  buildSantriTable();
+  updateStats();
+}
+
+function updateStats() {
+  const all = Object.entries(SANTRI_DATA);
+  const bersaldo = all.filter(([,v]) => v.saldo > 0).length;
+  document.getElementById('stat-bersaldo').textContent = bersaldo + ' santri';
+  document.getElementById('stat-total-santri').textContent = all.length;
+}
+
+function buildRekapTable() {
+  const maxTotal = Math.max(...REKAP.map(r => r.total));
+  const tbody = document.getElementById('tabel-rekap');
+  tbody.innerHTML = REKAP.map((r, i) => {
+    const pct = maxTotal > 0 ? Math.round((r.total / maxTotal) * 100) : 0;
+    const barW = Math.max(4, Math.round((r.total / maxTotal) * 160));
+    return `<tr>
+      <td style="font-weight:600;color:var(--abu)">${i+1}</td>
+      <td><span class="kamar-badge">${r.kamar}</span></td>
+      <td style="font-weight:600">${r.jumlah} santri</td>
+      <td class="${r.total > 0 ? 'saldo-pos' : 'saldo-zero'}">${rupiah(r.total)}</td>
+      <td>
+        <div class="rekap-bar">
+          <div class="bar-fill" style="width:${barW}px"></div>
+          <span style="font-size:12px;color:var(--abu)">${pct}%</span>
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function buildSantriTable() {
+  const q = (document.getElementById('search-santri').value || '').toLowerCase();
+  const kamarF = document.getElementById('filter-kamar').value;
+  const saldoF = document.getElementById('filter-saldo').value;
+  
+  filteredData = Object.entries(SANTRI_DATA).filter(([id, s]) => {
+    const matchQ = !q || s.nama.toLowerCase().includes(q) || id.toLowerCase().includes(q);
+    const matchK = !kamarF || s.kamar === kamarF;
+    const matchS = !saldoF || (saldoF === 'pos' && s.saldo > 0) || (saldoF === 'zero' && s.saldo === 0) || (saldoF === 'neg' && s.saldo < 0);
+    return matchQ && matchK && matchS;
+  });
+  
+  filteredData.sort((a, b) => {
+    let va = a[1][sortField] ?? a[0];
+    let vb = b[1][sortField] ?? b[0];
+    if (typeof va === 'string') va = va.toLowerCase();
+    if (typeof vb === 'string') vb = vb.toLowerCase();
+    return va < vb ? -sortDir : va > vb ? sortDir : 0;
+  });
+
+  document.getElementById('info-count').textContent = `${filteredData.length} santri ditemukan`;
+  currentPage = 1;
+  renderPage();
+}
+
+function renderPage() {
+  const start = (currentPage - 1) * ITEMS_PER_PAGE;
+  const page = filteredData.slice(start, start + ITEMS_PER_PAGE);
+  const tbody = document.getElementById('tabel-santri');
+  
+  if (page.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><div class="icon">🔍</div><p>Tidak ada data yang cocok</p></div></td></tr>`;
+  } else {
+    tbody.innerHTML = page.map(([id, s], i) => {
+      const cls = s.saldo > 0 ? 'saldo-pos' : s.saldo < 0 ? 'saldo-neg' : 'saldo-zero';
+      const status = s.saldo > 0 ? '<span style="background:#dcfce7;color:#166534;padding:3px 9px;border-radius:6px;font-size:11px;font-weight:700">CUKUP</span>'
+        : s.saldo < 0 ? '<span style="background:#fee2e2;color:#991b1b;padding:3px 9px;border-radius:6px;font-size:11px;font-weight:700">MINUS</span>'
+        : '<span style="background:#f3f4f6;color:#6b7280;padding:3px 9px;border-radius:6px;font-size:11px;font-weight:700">KOSONG</span>';
+      return `<tr>
+        <td style="color:var(--abu);font-size:13px">${start + i + 1}</td>
+        <td><span class="id-badge">${id}</span></td>
+        <td style="font-weight:600">${s.nama}</td>
+        <td><span class="kamar-badge">${s.kamar}</span></td>
+        <td class="${cls}">${rupiah(s.saldo)}</td>
+        <td>${status}</td>
+      </tr>`;
+    }).join('');
+  }
+  
+  const total = filteredData.length;
+  const pages = Math.ceil(total / ITEMS_PER_PAGE);
+  document.getElementById('page-info').textContent = `Menampilkan ${Math.min(start+1, total)}–${Math.min(start+ITEMS_PER_PAGE, total)} dari ${total}`;
+  
+  const pBtns = document.getElementById('page-btns');
+  let btns = '';
+  if (currentPage > 1) btns += `<button class="page-btn" onclick="goPage(${currentPage-1})">‹</button>`;
+  const s2 = Math.max(1, currentPage - 2), e2 = Math.min(pages, currentPage + 2);
+  for (let p = s2; p <= e2; p++) btns += `<button class="page-btn ${p===currentPage?'active':''}" onclick="goPage(${p})">${p}</button>`;
+  if (currentPage < pages) btns += `<button class="page-btn" onclick="goPage(${currentPage+1})">›</button>`;
+  pBtns.innerHTML = btns;
+}
+
+function goPage(p) { currentPage = p; renderPage(); }
+function filterTable() { buildSantriTable(); }
+function sortTable(field) {
+  if (sortField === field) sortDir *= -1;
+  else { sortField = field; sortDir = 1; }
+  buildSantriTable();
+}
+
+// ========== INIT ==========
+window.addEventListener('load', () => {
+  const sess = loadSession();
+  if (sess) {
+    if (sess.role === 'admin') showAdmin();
+    else if (sess.role === 'wali' && SANTRI_DATA[sess.id]) showWali(sess.id);
+    else show('halaman-login');
+  } else {
+    show('halaman-login');
+  }
+});
+</script>
+</body>
+</html>
